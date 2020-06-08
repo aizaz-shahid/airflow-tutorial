@@ -33,7 +33,7 @@ from airflow.operators.bash_operator import BashOperator
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': airflow.utils.dates.days_ago(2),
+    'start_date': airflow.utils.dates.days_ago(1),
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -55,7 +55,7 @@ default_args = {
 }
 
 dag = DAG(
-    'tutorial',
+    'dentaway_ETL',
     default_args=default_args,
     description='A simple tutorial DAG',
     schedule_interval=timedelta(days=1),
@@ -94,11 +94,19 @@ templated_command = """
 """
 
 t3 = BashOperator(
-    task_id='templated',
+    task_id='job_urls',
     depends_on_past=False,
-    bash_command=templated_command,
-    params={'my_param': 'Parameter I passed in'},
+    bash_command='/usr/local/airflow/scripts/main_jobs_local.sh ',
+    # params={'my_param': 'Parameter I passed in'},
     dag=dag,
 )
 
-t1 >> [t2, t3]
+t4 = BashOperator(
+    task_id='job_data',
+    depends_on_past=False,
+    bash_command='/usr/local/airflow/scripts/main_jobs_gcp.sh ',
+    # params={'my_param': 'Parameter I passed in'},
+    dag=dag,
+)
+
+t1 >> [t2, t3] >> t4
