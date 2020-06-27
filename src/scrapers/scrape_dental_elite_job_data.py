@@ -1,9 +1,9 @@
 """
-This script runs through the BDJ scraper.
-Default url: "https://www.bdjjobs.com/jobs/"
+This script runs through the Dental Elite scraper.
+Default url: "https://www.dentalelite.co.uk/jobs/"
 
 run is as:
-nohup python3 scrape_bdj_job_data.py filepath_job_url > ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-bdj.out
+nohup python3 scrape_dental_elite_job_data.py filepath_job_url > ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-dental-elite.out
 
 """
 
@@ -14,49 +14,53 @@ import datetime
 import random
 import os
 import sys
+from utils import config_webdriver as cw
 from utils import standard_formatter as sf
 # from utils import change_ip as cp
-from utils import config_webdriver as cw
+ 
 
 
+# Get all job details
 def get_all_jobs(job_urls, driver):
-    cols = ['Job URL', 'Title', 'Recruiter', 'Website', 'Location', 'Salary', 'Posted', 'Closes', 'Ref',
-            'Contract Type',
-            'Hours', 'Practice Type', 'Job Description', 'Organisations', 'Job Type', 'Contact']
+    cols = ['Job URL', 'Ref', 'Title', 'Position Type', 'Location', 'posted', 'Salary', 'Description']
     jobs_dataframe = pd.DataFrame(columns=cols)
-    print(len(job_urls))
+
     for i in range(len(job_urls)):
         try:
             job_url = job_urls[i]
             job_details_dictionary = dict()
-            print(job_url)
+
             job_details_dictionary['Job URL'] = [job_url]
+
             driver.switch_to.window(driver.window_handles[-1])
             driver.get(job_url)
 
-            # Extracts job title
-            job_details_dictionary['Title'] = [driver.find_element_by_tag_name('h1').text]
+            selector = driver.find_element_by_css_selector('div[class="job-details"]')
+            job_details_dictionary['Ref'] = [
+                selector.find_element_by_css_selector('div[class="ref"]').text.split(' ', 1)[1]]
 
-            # Extracts 'Recruiter', 'Website', 'Location', 'Salary', 'Posted', 'Closes', 'Ref', 'Contract Type',
-            # 'Hours', 'Practice Type', 'Organisations', 'Job Type', 'Contact'
-            details = driver.find_element_by_css_selector('dl[class="grid"]')
-            keys = details.find_elements_by_tag_name('dt')
-            values = details.find_elements_by_tag_name('dd')
-            for k, v in zip(keys, values):
-                job_details_dictionary[k.text] = [v.text]
+            job_details_dictionary['Title'] = [selector.find_element_by_css_selector('div[class="title"]').text]
 
-            # Extracts job description
-            job_details_dictionary['Job Description'] = [
-                driver.find_element_by_css_selector('div[class="block fix-text job-description"]').text]
+            info_row = selector.find_element_by_css_selector('div[class="info-row"]').find_elements_by_tag_name('div')
+
+            for i in info_row:
+                info = i.text.split(':')
+                job_details_dictionary[info[0].strip()] = [info[1].strip()]
+
+            job_details_dictionary['Description'] = [selector.find_element_by_css_selector('div[class="details"]').text]
+
+            job_details_dictionary['Salary'] = [
+                selector.find_element_by_css_selector('div[class="value"]').text.strip()]
 
             df = pd.DataFrame(job_details_dictionary)
+
             jobs_dataframe = jobs_dataframe.append(df)
             time.sleep(random.randint(1, 4))
 
         except Exception as e:
             print(str(e))
             time.sleep(random.randint(1, 4))
-    print(jobs_dataframe.shape)
+
     return jobs_dataframe
 
 
@@ -66,7 +70,7 @@ def main():
     sys_argv = sys.argv
 
     try:
-        parent_url = 'https://www.bdjjobs.com/jobs/'
+        parent_url = 'https://www.dentalelite.co.uk/jobs/'
         driver.get(parent_url)
 
         # Get all job urls
@@ -79,12 +83,12 @@ def main():
         job_urls = list(set(job_urls))
 
         if len(job_urls) != 0:
-            print("length not zero")
             # Get jobs dataframe
             data = get_all_jobs(job_urls, driver)
-            file_name = '../data/{}-bdj-jobs.csv'
+            file_name = '../data/{}-dental-elite-jobs.csv'
             file_name = sf.format_filename(file_name)
             data.to_csv(file_name, index=False)
+
         else:
             print('No jobs found')
 
@@ -98,7 +102,7 @@ def main():
         minutes = round(seconds/60, 1)
         hours = round(minutes/60, 1)
         print('DONE! ')
-        print("\n\nRun time = {} seconds; {} minutes; {} hours".format(seconds, minutes, hours))
+        print("\n\nRun time = {} seconds; {} minutes; {} hours".format(seconds, minutes, hours))        
 
 
 if __name__ == '__main__':

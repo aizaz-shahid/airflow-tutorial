@@ -57,20 +57,9 @@ gcs_bucket=dental-jobs
 rm -rf ../data/
 mkdir ../data
 
-nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-bdj $service_account $gcs_bucket scrape_bdj_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-bdj.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-dental-elite $service_account $gcs_bucket scrape_dental_elite_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-dental-elite.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-dental-recruit $service_account $gcs_bucket scrape_dental_recruit_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-dental-recruit.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-dental-staff $service_account $gcs_bucket scrape_diamond_dental_staff_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-diamond-dental-staff.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-tempdent-job $service_account $gcs_bucket scrape_tempdent_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-tempdent.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-zest-dental $service_account $gcs_bucket scrape_zest_dental_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-zest-dental.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-indeed-job $service_account $gcs_bucket scrape_indeed_job_url.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-job-url-indeed.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-scrape-dental $service_account $gcs_bucket main_scrape_dental_match.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-dental-match.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-greenapple-dental $service_account $gcs_bucket main_scrape_greenapple_dental.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-greenapple-dental.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-mbrdental $service_account $gcs_bucket main_scrape_mbrdental.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-mbrdental.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-medicruit $service_account $gcs_bucket main_scrape_medicruit.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-medicruit.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-brownslocum $service_account $gcs_bucket main_scrape_brownslocum.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-brownslocum.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-blueskypeople $service_account $gcs_bucket main_scrape_blueskypeople.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-blueskypeople.out
-# nohup bash /usr/local/airflow/scripts/main_jobs_gcp_single_run.sh $project_id vm-destination-dental $service_account $gcs_bucket main_scrape_destination_dental.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-destination-dental.out
+
+nohup bash /home/airflow/gcs/data/main_jobs_gcp_single_run.sh $project_id vm-medicruit $service_account $gcs_bucket main_scrape_medicruit.py  >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-medicruit.out
+
 wait
 echo "All tasks for indeeed complete."
 wait

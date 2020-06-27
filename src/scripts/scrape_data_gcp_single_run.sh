@@ -91,6 +91,6 @@ gcloud compute ssh --zone=$random_gcp_zone $2 --command "cd src && sudo gsutil -
 # gcloud compute ssh --zone=$random_gcp_zone $2 --command "cd src && sudo gsutil -m mv -r ../data/*.out gs://$4/$(date "+%Y-%m-%d")/logs/"
 
 gcloud compute ssh --zone=$random_gcp_zone $2 --command "sleep 10"
-# gcloud compute instances stop $2 --zone=$random_gcp_zone
+gcloud compute instances stop $2 --zone=$random_gcp_zone
 sleep 30
-# yes 'y' | gcloud compute instances delete $2 --zone=$random_gcp_zone
+yes 'y' | gcloud compute instances delete $2 --zone=$random_gcp_zone
