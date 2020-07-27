@@ -59,7 +59,7 @@ def main(job_title_list):
     # cp.change_ip(sudo_password)  # change the ip
 
     try:
-        for i in range(len(job_title_list)):
+        for i in range(len(job_title_list)): 
 
             job_url_list = []
 

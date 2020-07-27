@@ -76,7 +76,7 @@ gcloud beta compute --project=$1 instances create $2 \
 # --direction=INGRESS --priority=1000 --network=default \
 # --action=ALLOW --rules=tcp:443 \
 # --source-ranges=0.0.0.0/0 --target-tags=https-server
-
+echo $6
 sleep 30
 gcloud compute ssh --zone=$random_gcp_zone $2 --command "ls -la &&  sudo apt update "
 gcloud compute ssh --zone=$random_gcp_zone $2 --command "echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections

@@ -10,7 +10,7 @@ gcs_bucket=dental-jobs
 
 rm -rf ../data/
 mkdir ../data
-
+echo $2
 nohup bash /home/airflow/gcs/data/scrape_data_gcp_single_run.sh $project_id $1 $service_account $gcs_bucket scrape_indeed_job_data.py ../data/job-url/`date '+%Y-%m-%d'`*$2 >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-$2-indeed.out & 
 # nohup bash /home/airflow/gcs/data/scrape_data_gcp_single_run.sh $project_id vm-indeed-02 $service_account $gcs_bucket scrape_indeed_job_data.py ../data/job-url/`date '+%Y-%m-%d'`*locum-dentist.csv >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-locum-dentist-indeed.out & 
 # nohup bash /home/airflow/gcs/data/scrape_data_gcp_single_run.sh $project_id vm-indeed-03 $service_account $gcs_bucket scrape_indeed_job_data.py ../data/job-url/`date '+%Y-%m-%d'`*associate-dentist.csv >  ../data/$(date "+%Y-%m-%d-%H-%M-%S-")nohup-associate-dentist-indeed.out & 
