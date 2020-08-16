@@ -4,9 +4,9 @@ This script is the main indeed script and calls main_jobs_gcp_single_run.sh to s
 nohup bash main_jobs_gcp.sh >  $(date "+%Y-%m-%d-%H-%M-%S-")nohup-jobs-gcp.out
 """
 
-project_id=dentaway-01
-service_account=marketing-dev-compute@dentaway-01.iam.gserviceaccount.com
-gcs_bucket=dental-jobs
+project_id=t-emissary-273110
+service_account=marketing-dev-compute@t-emissary-273110.iam.gserviceaccount.com
+gcs_bucket=dental-jobs-01
 
 rm -rf ../data/
 mkdir ../data

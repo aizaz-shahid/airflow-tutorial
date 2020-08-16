@@ -162,7 +162,7 @@ t14 = BashOperator(
 )
 
 file_check_command = """
-    gsutil -q stat gs://dental-jobs/{{params.date}}/job-url/{{params.filename}}; echo $?
+    gsutil -q stat gs://dental-jobs-01/{{params.date}}/job-url/{{params.filename}}; echo $?
 """
 t1_check_file = BashOperator(
     task_id="bdj_file_check",
@@ -330,9 +330,9 @@ save_dagrun_report=[]
 for i,task in enumerate(instances):
     save_dagrun_report.append(bigquery_operator.BigQueryOperator(
         task_id='save_dagrun_report_{}'.format(i),
-        sql="""INSERT INTO `dentaway-01.dental_jobs.scrape_report` (task_id,state,duration) VALUES ({0},{1},{2})""".format(task['task_id'], task['state'],task['duration']),
+        sql="""INSERT `t-emissary-273110.Composer_metadata.scrape_report` (`task_id`,`state`,`duration`) VALUES ({0},{1},{2})""".format(str(task['task_id']), str(task['state']),task['duration']),
         use_legacy_sql=False,
-        destination_dataset_table='dentaway-01.dental_jobs.scrape_report',
+        # destination_dataset_table='t-emissary-273110.Composer_metadata.scrape_report',
         bigquery_conn_id='bigquery_default',
         dag=dag
     ))
